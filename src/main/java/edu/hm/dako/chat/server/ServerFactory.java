@@ -1,5 +1,7 @@
 package edu.hm.dako.chat.server;
 
+import edu.hm.dako.auditlog.server.AuditLogServerImpl;
+import edu.hm.dako.chat.udp.UdpServerSocket;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
@@ -12,8 +14,8 @@ import edu.hm.dako.chat.connection.ServerSocketInterface;
 import edu.hm.dako.chat.tcp.TcpServerSocket;
 
 /**
- * Uebernimmt die Konfiguration und Erzeugung bestimmter Server-Typen. 
- * @author Peter Mandl
+ * Uebernimmt die Konfiguration und Erzeugung bestimmter Server-Typen.
+ * @author Peter Mandl (erw.E.Nicole Harmat)
  */
 public final class ServerFactory {
 	private static Log log = LogFactory.getLog(ServerFactory.class);
@@ -23,7 +25,7 @@ public final class ServerFactory {
 
 	/**
 	 * Erzeugt einen Chat-Server
-	 * 
+	 *
 	 * @param implType
 	 *          Implementierungytyp des Servers
 	 * @param serverPort
@@ -60,8 +62,35 @@ public final class ServerFactory {
 				throw new Exception(e);
 			}
 
+		case UDPAuditLogImplementation:
+
+      try {
+        /*TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
+          receiveBufferSize);
+        return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
+          getDecoratedServerSocket(tcpServerSocket), serverGuiInterface);*/
+
+        UdpServerSocket udpServerSocket = new UdpServerSocket(serverPort, sendBufferSize);
+
+
+      } catch (Exception e) {
+        throw new Exception(e);
+      }
+
+
+    case TCPAuditLogImplementation:
+
+      try {
+        TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
+          receiveBufferSize);
+        return new AuditLogServerImpl(Executors.newCachedThreadPool(),
+          getDecoratedServerSocket(tcpServerSocket), serverGuiInterface);
+      } catch (Exception e) {
+        throw new Exception(e);
+      }
+
 		default:
-			System.out.println("Dezeit nur TCP implementiert!");
+			System.out.println("Dezeit nur TCP implementiert!"); //auskommentieren!
 			throw new RuntimeException("Unknown type: " + implType);
 		}
 	}
@@ -73,7 +102,7 @@ public final class ServerFactory {
 
 	/**
 	 * Dekoriert Server-Socket mit Logging-Funktionalitaet
-	 * 
+	 *
 	 * @author mandl
 	 *
 	 */

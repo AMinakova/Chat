@@ -17,7 +17,7 @@ import edu.hm.dako.chat.tcp.TcpConnectionFactory;
 
 /**
  * Gemeinsame Funktionalitaet fuer alle Client-Implementierungen.
- * 
+ *
  * @author Peter Mandl
  *
  */
@@ -89,7 +89,7 @@ public abstract class AbstractChatClient implements ClientCommunication {
 
 	/**
 	 * Ergaenzt ConnectionFactory um Logging-Funktionalitaet
-	 * 
+	 *
 	 * @param connectionFactory
 	 *          ConnectionFactory
 	 * @return Dekorierte ConnectionFactory

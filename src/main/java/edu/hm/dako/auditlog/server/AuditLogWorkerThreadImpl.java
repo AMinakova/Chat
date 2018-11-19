@@ -1,9 +1,4 @@
-package edu.hm.dako.chat.server;
-
-import java.util.Vector;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+package edu.hm.dako.auditlog.server;
 
 import edu.hm.dako.chat.common.ChatPDU;
 import edu.hm.dako.chat.common.ClientConversationStatus;
@@ -12,6 +7,14 @@ import edu.hm.dako.chat.common.ExceptionHandler;
 import edu.hm.dako.chat.connection.Connection;
 import edu.hm.dako.chat.connection.ConnectionTimeoutException;
 import edu.hm.dako.chat.connection.EndOfFileException;
+import edu.hm.dako.chat.server.AbstractWorkerThread;
+import edu.hm.dako.chat.server.ChatServerGuiInterface;
+import edu.hm.dako.chat.server.SharedChatClientList;
+import edu.hm.dako.chat.server.SharedServerCounter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.Vector;
 
 /**
  * Worker-Thread zur serverseitigen Bedienung einer Session mit einem Client.
@@ -20,12 +23,12 @@ import edu.hm.dako.chat.connection.EndOfFileException;
  * @author Peter Mandl
  *
  */
-public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
+public class AuditLogWorkerThreadImpl extends AbstractWorkerThread {
 
-	private static Log log = LogFactory.getLog(SimpleChatWorkerThreadImpl.class);
+	private static Log log = LogFactory.getLog(AuditLogWorkerThreadImpl.class);
 
-	public SimpleChatWorkerThreadImpl(Connection con, SharedChatClientList clients,
-			SharedServerCounter counter, ChatServerGuiInterface serverGuiInterface) {
+	public AuditLogWorkerThreadImpl(Connection con, SharedChatClientList clients,
+                                    SharedServerCounter counter, ChatServerGuiInterface serverGuiInterface) {
 
 		super(con, clients, counter, serverGuiInterface);
 	}

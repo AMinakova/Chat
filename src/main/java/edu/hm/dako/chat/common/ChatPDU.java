@@ -56,6 +56,7 @@ public class ChatPDU implements Serializable {
 	private int errorCode;
 	public final static int NO_ERROR = 0;
 	public final static int LOGIN_ERROR = 1;
+  // public final static int LOGIN_ERROR = 2;
 
 	// Daten zur statistischen Auswertung, die mit der Logout-Response-PDU
 	// mitgesendet werden:
@@ -260,7 +261,7 @@ public class ChatPDU implements Serializable {
 
 	/**
 	 * Erzeugen einer Logout-Event-PDU
-	 * 
+	 *
 	 * @param userName
 	 *          Client, der Logout-Request-PDU gesendet hat
 	 * @param clientList
@@ -285,7 +286,7 @@ public class ChatPDU implements Serializable {
 
 	/**
 	 * Erzeugen einer Login-Event-PDU
-	 * 
+	 *
 	 * @param userName
 	 *          Client, der Login-Request-PDU gesendet hat
 	 * @param clientList
@@ -311,7 +312,7 @@ public class ChatPDU implements Serializable {
 
 	/**
 	 * Erzeugen einer Login-Response-PDU
-	 * 
+	 *
 	 * @param eventInitiator
 	 *          Urspruenglicher Client, der Login-Request-PDU gesendet hat
 	 * @param receivedPdu
@@ -332,7 +333,7 @@ public class ChatPDU implements Serializable {
 
 	/**
 	 * Erzeugen einer Chat-Message-Event-PDU
-	 * 
+	 *
 	 * @param userName
 	 *          Client, der Chat-Message-Request-PDU gesendet hat
 	 * @param receivedPdu
@@ -355,7 +356,7 @@ public class ChatPDU implements Serializable {
 
 	/**
 	 * Erzeugen einer Logout-Response-PDU
-	 * 
+	 *
 	 * @param eventInitiator
 	 *          Urspruenglicher Client, der Logout-Request-PDU gesendet hat
 	 * @param numberOfSentEvents
@@ -395,7 +396,7 @@ public class ChatPDU implements Serializable {
 
 	/**
 	 * Erzeugen einer Chat-Message-Response-PDU
-	 * 
+	 *
 	 * @param eventInitiator
 	 *          Urspruenglicher Client, der Chat-Message-Request-PDU gesendet hat
 	 * @param numberOfSentEvents
@@ -442,7 +443,7 @@ public class ChatPDU implements Serializable {
 
 	/**
 	 * Erzeugen einer Login-Response-PDU mit Fehlermeldung
-	 * 
+	 *
 	 * @param pdu
 	 *          Empfangene PDU
 	 * @param errorCode

@@ -1,5 +1,6 @@
 package edu.hm.dako.chat.server;
 
+import edu.hm.dako.chat.udp.UdpServerSocket;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -37,8 +38,8 @@ import javafx.stage.Stage;
 
 /**
  * Benutzeroberflaeche zum Starten des Chat-Servers
- * 
- * @author Paul Mandl
+ *
+ * @author Paul Mandl (erw. E.Nicole Harmat)
  *
  */
 public class ChatServerGUI extends Application implements ChatServerGuiInterface {
@@ -100,8 +101,9 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	// Moegliche Belegungen des Implementierungsfeldes in der GUI
 	ObservableList<String> implTypeOptions = FXCollections.observableArrayList(
-			SystemConstants.IMPL_TCP_SIMPLE);
-
+			SystemConstants.IMPL_TCP_SIMPLE,
+	    //SystemConstants.IMPL_UDP_AUDITLOG,
+      SystemConstants.IMPL_TCP_AUDITLOG);
 	/**
 	 * Konstruktion der ServerGUI
 	 */
@@ -157,7 +159,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Eingabe-Pane erzeugen
-	 * 
+	 *
 	 * @return pane
 	 */
 	private GridPane createInputPane() {
@@ -175,9 +177,10 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 		inputPane.setVgap(1);
 
 		comboBoxImplType = createComboBox(implTypeOptions);
-		serverPort = createEditableTextfield(DEFAULT_SERVER_PORT);
+		serverPort = createEditableTextfield("");
 		sendBufferSize = createEditableTextfield(DEFAULT_SENDBUFFER_SIZE);
 		receiveBufferSize = createEditableTextfield(DEFAULT_RECEIVEBUFFER_SIZE);
+		comboBoxImplType.setVisibleRowCount(3);
 
 		inputPane.add(label, 1, 3);
 		inputPane.add(comboBoxImplType, 3, 3);
@@ -193,7 +196,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Info-Pain erzeugen
-	 * 
+	 *
 	 * @return pane
 	 */
 	private GridPane createInfoPane() {
@@ -214,7 +217,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Pane fuer Buttons erzeugen
-	 * 
+	 *
 	 * @return HBox
 	 */
 	private HBox createButtonPane() {
@@ -231,7 +234,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Label erzeugen
-	 * 
+	 *
 	 * @param value
 	 * @return Label
 	 */
@@ -244,7 +247,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Aufbau der Combobox fuer die Serverauswahl in der GUI
-	 * 
+	 *
 	 * @param options
 	 *          Optionen fuer Implementierungstyp
 	 * @return Combobox
@@ -261,7 +264,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Trennlinie erstellen
-	 * 
+	 *
 	 * @param value
 	 *          Text der Trennlinie
 	 * @param size
@@ -288,7 +291,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Nicht editierbares Feld erzeugen
-	 * 
+	 *
 	 * @param value
 	 *          Feldinhalt
 	 * @return Textfeld
@@ -305,7 +308,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Erstellung editierbarer Textfelder
-	 * 
+	 *
 	 * @param value
 	 *          Feldinhalt
 	 * @return textField
@@ -429,7 +432,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Chat-Server starten
-	 * 
+	 *
 	 * @param implType
 	 *          Implementierungstyp, der zu starten ist
 	 * @param serverPort
@@ -442,14 +445,24 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 	private void startChatServer(String implType, int serverPort, int sendBufferSize,
 			int receiveBufferSize) throws Exception {
 
-		ImplementationType serverImpl = null;
-		if (implType.equals(SystemConstants.IMPL_TCP_SIMPLE)) {
-			serverImpl = ImplementationType.TCPSimpleImplementation;
-		}
+    ImplementationType serverImpl = null;
+    if (implType.equals(SystemConstants.IMPL_TCP_SIMPLE)) {
+      serverImpl = ImplementationType.TCPSimpleImplementation;
+    }
+    else {
+      if (implType.equals(SystemConstants.IMPL_UDP_AUDITLOG)) {
+        serverImpl = ImplementationType.UDPAuditLogImplementation;
+      } else {
+        if (implType.equals(SystemConstants.IMPL_TCP_AUDITLOG)) {
+          serverImpl = ImplementationType.TCPAuditLogImplementation;
+        }
+      }
+    }
 
 		try {
 			chatServer = ServerFactory.getServer(serverImpl, serverPort, sendBufferSize,
 					receiveBufferSize, this);
+
 		} catch (Exception e) {
 			log.error("Fehler beim Starten des Chat-Servers: " + e.getMessage());
 			ExceptionHandler.logException(e);
@@ -465,7 +478,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Serverport aus GUI auslesen und pruefen
-	 * 
+	 *
 	 * @return Verwendeter Serverport
 	 */
 	private int readServerPort() {
@@ -490,7 +503,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Groesse des Sendepuffers in Byte auslesen und pruefen
-	 * 
+	 *
 	 * @return Eingegebene Sendpuffer-Groesse
 	 */
 	private int readSendBufferSize() {
@@ -515,7 +528,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	/**
 	 * Groesse des Empfangspuffers in Byte auslesen und pruefen
-	 * 
+	 *
 	 * @return Eingegebene Empfangspuffer-Groesse
 	 */
 	private int readReceiveBufferSize() {

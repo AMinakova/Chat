@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 
 /**
  * Controller fuer Login-GUI
- * 
+ *
  * @author Paul Mandl
  *
  */
@@ -141,7 +141,7 @@ public class LogInGuiController implements Initializable {
 
 	/**
 	 * Pruefen, ob IP-Adresse korrekt ist
-	 * 
+	 *
 	 * @return true - korrekt, false - nicht korrekt
 	 */
 	private Boolean ipCorrect() {
@@ -159,6 +159,7 @@ public class LogInGuiController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		comboServerType.getItems().addAll(SystemConstants.IMPL_TCP_SIMPLE);
+		comboServerType.getItems().addAll(SystemConstants.IMPL_TCP_SIMPLE, SystemConstants.IMPL_TCP_AUDITLOG);
+		//comboServerType.getItems().addAll(SystemConstants.IMPL_TCP_AUDITLOG);
 	}
 }
