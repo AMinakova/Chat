@@ -100,7 +100,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 
 	// Moegliche Belegungen des Implementierungsfeldes in der GUI
 	ObservableList<String> implTypeOptions = FXCollections.observableArrayList(
-			SystemConstants.IMPL_TCP_SIMPLE);
+			SystemConstants.IMPL_TCP_SIMPLE, SystemConstants.IMPL_TCP_AUDITLOG);
 
 	/**
 	 * Konstruktion der ServerGUI
@@ -443,8 +443,15 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 			int receiveBufferSize) throws Exception {
 
 		ImplementationType serverImpl = null;
-		if (implType.equals(SystemConstants.IMPL_TCP_SIMPLE)) {
-			serverImpl = ImplementationType.TCPSimpleImplementation;
+		switch(implType) {
+
+			case SystemConstants.IMPL_TCP_SIMPLE:
+				serverImpl = ImplementationType.TCPSimpleImplementation;
+				break;
+
+			case SystemConstants.IMPL_TCP_AUDITLOG:
+				serverImpl = ImplementationType.TCPAuditLogImplementation;
+				break;
 		}
 
 		try {

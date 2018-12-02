@@ -1,5 +1,6 @@
 package edu.hm.dako.chat.server;
 
+import edu.hm.dako.chat.auditlog.AuditLogServerImpl;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
@@ -49,16 +50,26 @@ public final class ServerFactory {
 
 		switch (implType) {
 
-		case TCPSimpleImplementation:
+		  case TCPSimpleImplementation:
 
-			try {
-				TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
-						receiveBufferSize);
-				return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
-						getDecoratedServerSocket(tcpServerSocket), serverGuiInterface);
-			} catch (Exception e) {
-				throw new Exception(e);
-			}
+        try {
+          TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
+              receiveBufferSize);
+          return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
+              getDecoratedServerSocket(tcpServerSocket), serverGuiInterface);
+        } catch (Exception e) {
+          throw new Exception(e);
+        }
+
+      case TCPAuditLogImplementation:
+
+        try {
+          TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
+              receiveBufferSize);
+          return new AuditLogServerImpl(tcpServerSocket, Executors.newCachedThreadPool());
+        } catch (Exception e) {
+          throw new Exception(e);
+        }
 
 		default:
 			System.out.println("Dezeit nur TCP implementiert!");

@@ -8,4 +8,5 @@ package edu.hm.dako.chat.common;
 
 public enum ImplementationType {
 	TCPSimpleImplementation,
+	TCPAuditLogImplementation,
 }
