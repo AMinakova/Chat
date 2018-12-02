@@ -1,6 +1,8 @@
 package edu.hm.dako.chat.server;
 
 import edu.hm.dako.chat.auditlog.AuditLogServerImpl;
+import edu.hm.dako.chat.connection.AuditConnectionDecorator;
+import edu.hm.dako.chat.tcp.TcpConnectionFactory;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
@@ -51,12 +53,17 @@ public final class ServerFactory {
 		switch (implType) {
 
 		  case TCPSimpleImplementation:
+      case TCPExtendedImplementation:
 
         try {
           TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
               receiveBufferSize);
+          //TODO später host adress to RemoteServerAdress
+          Connection auditLogServerConnection = implType == ImplementationType.TCPExtendedImplementation
+              ? new TcpConnectionFactory().connectToServer(null, 60000, 0, sendBufferSize, receiveBufferSize)
+              : null;
           return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
-              getDecoratedServerSocket(tcpServerSocket), serverGuiInterface);
+              getDecoratedServerSocket(tcpServerSocket, auditLogServerConnection), serverGuiInterface);
         } catch (Exception e) {
           throw new Exception(e);
         }
@@ -77,9 +84,10 @@ public final class ServerFactory {
 		}
 	}
 
+
 	private static ServerSocketInterface getDecoratedServerSocket(
-			ServerSocketInterface serverSocket) {
-		return new DecoratingServerSocket(serverSocket);
+			ServerSocketInterface serverSocket, Connection auditLogServerConnection) {
+		return new DecoratingServerSocket(serverSocket, auditLogServerConnection);
 	}
 
 	/**
@@ -91,14 +99,19 @@ public final class ServerFactory {
 	private static class DecoratingServerSocket implements ServerSocketInterface {
 
 		private final ServerSocketInterface wrappedServerSocket;
+		private final Connection auditLogServerConnection;
 
-		DecoratingServerSocket(ServerSocketInterface wrappedServerSocket) {
+		DecoratingServerSocket(ServerSocketInterface wrappedServerSocket, Connection auditLogServerConnection) {
 			this.wrappedServerSocket = wrappedServerSocket;
+			this.auditLogServerConnection = auditLogServerConnection;
 		}
 
 		@Override
 		public Connection accept() throws Exception {
-			return new LoggingConnectionDecorator(wrappedServerSocket.accept());
+			Connection loggingDecorated = new LoggingConnectionDecorator(wrappedServerSocket.accept());
+			return auditLogServerConnection == null
+          ? loggingDecorated
+          : new AuditConnectionDecorator(loggingDecorated, auditLogServerConnection);
 		}
 
 		@Override

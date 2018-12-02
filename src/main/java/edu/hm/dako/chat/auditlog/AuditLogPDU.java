@@ -1,5 +1,7 @@
 package edu.hm.dako.chat.auditlog;
 
-public class AuditLogPDU {
+import java.io.Serializable;
+
+public class AuditLogPDU implements Serializable {
 
 }
