@@ -21,7 +21,7 @@ import javafx.concurrent.Task;
  */
 public class SimpleChatServerImpl extends AbstractChatServer {
 
-	private static Log log = LogFactory.getLog(SimpleChatServerImpl.class);
+	protected static Log log = LogFactory.getLog(SimpleChatServerImpl.class);
 
 	// Threadpool fuer Worker-Threads
 	private final ExecutorService executorService;
@@ -29,6 +29,9 @@ public class SimpleChatServerImpl extends AbstractChatServer {
 	// Socket fuer den Listener, der alle Verbindungsaufbauwuensche der Clients
 	// entgegennimmt
 	private ServerSocketInterface socket;
+
+	// Connection zwischen Server und AuditlogServer
+	private Connection auditLogServerConnection;
 
 	/**
 	 * Konstruktor
@@ -38,11 +41,12 @@ public class SimpleChatServerImpl extends AbstractChatServer {
 	 * @param serverGuiInterface
 	 */
 	public SimpleChatServerImpl(ExecutorService executorService,
-			ServerSocketInterface socket, ChatServerGuiInterface serverGuiInterface) {
+			ServerSocketInterface socket, ChatServerGuiInterface serverGuiInterface, Connection auditLogServerConnection) {
 		log.debug("SimpleChatServerImpl konstruiert");
 		this.executorService = executorService;
 		this.socket = socket;
 		this.serverGuiInterface = serverGuiInterface;
+		this.auditLogServerConnection = auditLogServerConnection;
 		counter = new SharedServerCounter();
 		counter.logoutCounter = new AtomicInteger(0);
 		counter.eventCounter = new AtomicInteger(0);
@@ -68,7 +72,7 @@ public class SimpleChatServerImpl extends AbstractChatServer {
 
 						// Neuen Workerthread starten
 						executorService.submit(new SimpleChatWorkerThreadImpl(connection, clients,
-								counter, serverGuiInterface));
+								counter, serverGuiInterface, auditLogServerConnection));
 					} catch (Exception e) {
 						if (socket.isClosed()) {
 							log.debug("Socket wurde geschlossen");
@@ -111,6 +115,7 @@ public class SimpleChatServerImpl extends AbstractChatServer {
 		clients.deleteAll();
 		Thread.currentThread().interrupt();
 		socket.close();
+		auditLogServerConnection.close();
 		log.debug("Listen-Socket geschlossen");
 		executorService.shutdown();
 		log.debug("Threadpool freigegeben");

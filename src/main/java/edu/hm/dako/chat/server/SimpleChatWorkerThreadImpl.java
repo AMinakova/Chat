@@ -1,5 +1,7 @@
 package edu.hm.dako.chat.server;
 
+import edu.hm.dako.chat.auditlog.AuditLogPDU;
+import edu.hm.dako.chat.tcp.TcpConnection;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -23,11 +25,13 @@ import edu.hm.dako.chat.connection.EndOfFileException;
 public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
 
 	private static Log log = LogFactory.getLog(SimpleChatWorkerThreadImpl.class);
+	private Connection auditLogServerConnection;
 
 	public SimpleChatWorkerThreadImpl(Connection con, SharedChatClientList clients,
-			SharedServerCounter counter, ChatServerGuiInterface serverGuiInterface) {
-
+			SharedServerCounter counter, ChatServerGuiInterface serverGuiInterface,
+      Connection auditLogServerConnection) {
 		super(con, clients, counter, serverGuiInterface);
+		this.auditLogServerConnection = auditLogServerConnection;
 	}
 
 	@Override
@@ -452,5 +456,14 @@ public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
 			log.error("Exception bei der Nachrichtenverarbeitung");
 			ExceptionHandler.logExceptionAndTerminate(e);
 		}
+
+    // Enpfangene Nachricht nach AuditLog ubergeben
+    if(auditLogServerConnection != null) {
+      //TODO einfugen parameters von new Auditlogpdu(....) from receivedPDu
+      AuditLogPDU auditLogPDU = new AuditLogPDU();
+      auditLogPDU.setName("ChatserverThread name: " + Thread.currentThread().getName()
+        + "; pdu: " + receivedPdu.getPduType());
+      this.auditLogServerConnection.send(auditLogPDU);
+    }
 	}
 }

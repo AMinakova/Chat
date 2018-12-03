@@ -32,14 +32,14 @@ public class AuditLogWorkerThreadImpl extends Thread {
 
   protected void handleIncomingMessage() throws Exception {
     // Warten auf naechste Nachricht
-    AuditLogPDU receivedPdu = null;
+    AuditLogPDU auditLogPDU = null;
 
     // Nach einer Minute wird geprueft, ob Client noch eingeloggt ist
     final int RECEIVE_TIMEOUT = 1200000;
 
     try {
       // Nachricht empfangen
-      receivedPdu = (AuditLogPDU) connection.receive(RECEIVE_TIMEOUT);
+      auditLogPDU = (AuditLogPDU) connection.receive(RECEIVE_TIMEOUT);
 
     } catch (ConnectionTimeoutException e) {
 
@@ -68,6 +68,7 @@ public class AuditLogWorkerThreadImpl extends Thread {
 
     // Empfangene Nachricht bearbeiten
     try {
+      System.out.println(auditLogPDU.getName());
       //TODO: Methode(z.b. AuditLogProtocol), die einkommende Nachrichten in file schreibt
 
     } catch (Exception e) {
