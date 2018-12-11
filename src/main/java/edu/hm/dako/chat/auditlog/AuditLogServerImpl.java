@@ -2,6 +2,7 @@ package edu.hm.dako.chat.auditlog;
 
 import edu.hm.dako.chat.connection.Connection;
 import edu.hm.dako.chat.connection.ServerSocketInterface;
+import edu.hm.dako.chat.server.ChatServerGUI;
 import edu.hm.dako.chat.server.ChatServerInterface;
 import java.util.concurrent.ExecutorService;
 import javafx.concurrent.Task;
@@ -9,15 +10,20 @@ import javafx.concurrent.Task;
 public class AuditLogServerImpl implements ChatServerInterface {
   private ServerSocketInterface socket;
   private final ExecutorService executorService;
+  private ChatServerGUI serverGuiInterface;
+
 
   public AuditLogServerImpl(ServerSocketInterface socket,
-      ExecutorService executorService) {
+      ExecutorService executorService,
+      ChatServerGUI serverGuiInterface) {
     this.socket = socket;
     this.executorService = executorService;
+    this.serverGuiInterface = serverGuiInterface;
   }
 
   @Override
   public void start() {
+    AuditLogServerImpl auditLogServer = this;
     Task<Void> task = new Task<Void>() {
       @Override
       protected Void call() throws Exception {
@@ -30,8 +36,9 @@ public class AuditLogServerImpl implements ChatServerInterface {
 
             Connection connection = socket.accept();
 
+
             // Neuen Workerthread starten
-            executorService.submit(new AuditLogWorkerThreadImpl(connection));
+            executorService.submit(new AuditLogWorkerThreadImpl(connection, auditLogServer));
 
           } catch (Exception e) {
             if (socket.isClosed()) {
@@ -49,6 +56,10 @@ public class AuditLogServerImpl implements ChatServerInterface {
     Thread th = new Thread(task);
     th.setDaemon(true);
     th.start();
+  }
+
+  public void shutdown() {
+    serverGuiInterface.stopServer();
   }
 
   @Override

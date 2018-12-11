@@ -1,12 +1,11 @@
 package edu.hm.dako.chat.server;
 
-import edu.hm.dako.chat.auditlog.AuditLogPDU;
-import edu.hm.dako.chat.tcp.TcpConnection;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import edu.hm.dako.chat.auditlog.AuditLogPDU;
 import edu.hm.dako.chat.common.ChatPDU;
 import edu.hm.dako.chat.common.ClientConversationStatus;
 import edu.hm.dako.chat.common.ClientListEntry;
@@ -428,6 +427,13 @@ public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
 			return;
 		}
 
+		//Empfangene Nachricht nach AuditLog ubergeben
+		if(auditLogServerConnection != null) {
+			AuditLogPDU auditLogPDU = new AuditLogPDU(receivedPdu.getPduType(), receivedPdu.getUserName(),
+          receivedPdu.getClientThreadName(), receivedPdu.getServerThreadName(), receivedPdu.getMessage());
+			this.auditLogServerConnection.send(auditLogPDU);
+		}
+
 		// Empfangene Nachricht bearbeiten
 		try {
 			switch (receivedPdu.getPduType()) {
@@ -456,14 +462,5 @@ public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
 			log.error("Exception bei der Nachrichtenverarbeitung");
 			ExceptionHandler.logExceptionAndTerminate(e);
 		}
-
-    // Enpfangene Nachricht nach AuditLog ubergeben
-    if(auditLogServerConnection != null) {
-      //TODO einfugen parameters von new Auditlogpdu(....) from receivedPDu
-      AuditLogPDU auditLogPDU = new AuditLogPDU();
-      auditLogPDU.setName("ChatserverThread name: " + Thread.currentThread().getName()
-        + "; pdu: " + receivedPdu.getPduType());
-      this.auditLogServerConnection.send(auditLogPDU);
-    }
 	}
 }

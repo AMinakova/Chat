@@ -640,4 +640,8 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 		log.debug(requestCounter.get() + " emfangene Message Requests");
 		updateNumberOfRequests();
 	}
+
+	public void stopServer() {
+		stopButton.fire();
+	}
 }

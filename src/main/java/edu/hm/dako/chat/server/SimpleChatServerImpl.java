@@ -1,5 +1,7 @@
 package edu.hm.dako.chat.server;
 
+import edu.hm.dako.chat.auditlog.AuditLogPDU;
+import edu.hm.dako.chat.common.PduType;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -115,7 +117,11 @@ public class SimpleChatServerImpl extends AbstractChatServer {
 		clients.deleteAll();
 		Thread.currentThread().interrupt();
 		socket.close();
-		auditLogServerConnection.close();
+		if(auditLogServerConnection != null) {
+			AuditLogPDU auditLogPDU = new AuditLogPDU(PduType.SHUTDOWN_MESSAGE);
+			auditLogServerConnection.send(auditLogPDU);
+			auditLogServerConnection.close();
+		}
 		log.debug("Listen-Socket geschlossen");
 		executorService.shutdown();
 		log.debug("Threadpool freigegeben");

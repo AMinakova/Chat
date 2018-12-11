@@ -1,7 +1,6 @@
 package edu.hm.dako.chat.server;
 
 import edu.hm.dako.chat.auditlog.AuditLogServerImpl;
-import edu.hm.dako.chat.tcp.TcpConnection;
 import edu.hm.dako.chat.tcp.TcpConnectionFactory;
 import java.util.concurrent.Executors;
 
@@ -84,7 +83,8 @@ public final class ServerFactory {
         try {
           TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
               receiveBufferSize);
-          return new AuditLogServerImpl(tcpServerSocket, Executors.newCachedThreadPool());
+          return new AuditLogServerImpl(tcpServerSocket, Executors.newCachedThreadPool(),
+							(ChatServerGUI) serverGuiInterface);
         } catch (Exception e) {
           throw new Exception(e);
         }

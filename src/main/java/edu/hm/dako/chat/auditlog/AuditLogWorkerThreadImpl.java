@@ -1,5 +1,6 @@
 package edu.hm.dako.chat.auditlog;
 
+import edu.hm.dako.chat.common.PduType;
 import edu.hm.dako.chat.connection.Connection;
 import edu.hm.dako.chat.connection.ConnectionTimeoutException;
 import edu.hm.dako.chat.connection.EndOfFileException;
@@ -8,9 +9,12 @@ public class AuditLogWorkerThreadImpl extends Thread {
 
   private Connection connection;
   private boolean finished = false;
+  private AuditLogServerImpl auditLogServer;
+  private AuditLogStatistics stat = new AuditLogStatistics();
 
-  public AuditLogWorkerThreadImpl(Connection connection) {
+  public AuditLogWorkerThreadImpl(Connection connection, AuditLogServerImpl auditLogServer) {
     this.connection = connection;
+    this.auditLogServer = auditLogServer;
   }
 
   @Override
@@ -52,6 +56,7 @@ public class AuditLogWorkerThreadImpl extends Thread {
     } catch (EndOfFileException e) {
       System.out.println("End of File beim Empfang, vermutlich Verbindungsabbau des Partners.");
       finished = true;
+
       return;
 
     } catch (java.net.SocketException e) {
@@ -68,14 +73,18 @@ public class AuditLogWorkerThreadImpl extends Thread {
 
     // Empfangene Nachricht bearbeiten
     try {
-      System.out.println(auditLogPDU.getName());
-      //TODO: Methode(z.b. AuditLogProtocol), die einkommende Nachrichten in file schreibt
+      stat.writeAuditLogStatistics();
 
     } catch (Exception e) {
       System.out.println("Exception bei der Nachrichtenverarbeitung"); 
     }
+
+    if(auditLogPDU.getPduType() == PduType.SHUTDOWN_MESSAGE) {
+      finished = true;
+      this.auditLogServer.shutdown();
   }
-  
+}
+
   private void closeConnection() {
     try {
       connection.close();
