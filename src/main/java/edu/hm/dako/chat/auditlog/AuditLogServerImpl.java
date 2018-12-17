@@ -8,9 +8,11 @@ import java.util.concurrent.ExecutorService;
 import javafx.concurrent.Task;
 
 public class AuditLogServerImpl implements ChatServerInterface {
+
   private ServerSocketInterface socket;
   private final ExecutorService executorService;
   private ChatServerGUI serverGuiInterface;
+  private AuditLogStatistics auditLogStatistics;
 
 
   public AuditLogServerImpl(ServerSocketInterface socket,
@@ -19,6 +21,7 @@ public class AuditLogServerImpl implements ChatServerInterface {
     this.socket = socket;
     this.executorService = executorService;
     this.serverGuiInterface = serverGuiInterface;
+    this.auditLogStatistics = new AuditLogStatistics("AuditLogStatistics");
   }
 
   @Override
@@ -36,9 +39,9 @@ public class AuditLogServerImpl implements ChatServerInterface {
 
             Connection connection = socket.accept();
 
-
             // Neuen Workerthread starten
-            executorService.submit(new AuditLogWorkerThreadImpl(connection, auditLogServer));
+            executorService.submit(
+                new AuditLogWorkerThreadImpl(connection, auditLogServer, auditLogStatistics));
 
           } catch (Exception e) {
             if (socket.isClosed()) {

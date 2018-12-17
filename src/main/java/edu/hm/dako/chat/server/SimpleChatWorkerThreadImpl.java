@@ -429,9 +429,15 @@ public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
 
 		//Empfangene Nachricht nach AuditLog ubergeben
 		if(auditLogServerConnection != null) {
-			AuditLogPDU auditLogPDU = new AuditLogPDU(receivedPdu.getPduType(), receivedPdu.getUserName(),
-          receivedPdu.getClientThreadName(), receivedPdu.getServerThreadName(), receivedPdu.getMessage());
-			this.auditLogServerConnection.send(auditLogPDU);
+		  try {
+        AuditLogPDU auditLogPDU = new AuditLogPDU(receivedPdu.getPduType(), receivedPdu.getUserName(),
+            receivedPdu.getClientThreadName(), this.getName(),
+            String. valueOf(receivedPdu.getSequenceNumber()), receivedPdu.getMessage());
+        this.auditLogServerConnection.send(auditLogPDU);
+      }
+      catch (Exception ex) {
+		    System.out.println("Error when sending audit log pdu: " + ex.toString());
+      }
 		}
 
 		// Empfangene Nachricht bearbeiten

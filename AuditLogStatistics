@@ -1,0 +1,42 @@
+2018-12-17 16:51:02.932nullShutdown-Messagenullnullnull2018-12-17 16:53:11.133nullLogin-RequesthhhhClient-hhhhnull2018-12-17 16:53:39.735nullChat-Message-RequesthhhhClient-hhhhadrtgrt2018-12-17 16:53:41.558nullChat-Message-RequesthhhhClient-hhhhertaet2018-12-17 16:53:44.089nullChat-Message-RequesthhhhClient-hhhhaert aert2018-12-17 16:53:57.828nullLogout-RequesthhhhClient-hhhhnull2018-12-17 16:54:00.912nullShutdown-Messagenullnullnull2018-12-17 16:58:25.730 | null | Login-Request | anna | Client-anna | null 
+2018-12-17 16:58:29.695 | null | Chat-Message-Request | anna | Client-anna | adsgsdg 
+2018-12-17 16:58:36.172 | null | Chat-Message-Request | anna | Client-anna | I am anna 
+2018-12-17 16:58:45.719 | null | Login-Request | boris | Client-boris | null 
+2018-12-17 16:58:51.250 | null | Chat-Message-Request | boris | Client-boris | Hi anna 
+2018-12-17 16:58:56.352 | null | Chat-Message-Request | boris | Client-boris | I am Boris 
+2018-12-17 16:58:58.009 | null | Logout-Request | boris | Client-boris | null 
+2018-12-17 16:59:05.934 | null | Logout-Request | anna | Client-anna | null 
+2018-12-17 16:59:09.835 | null | Shutdown-Message | null | null | null 
+0 | 2018-12-17 17:15:40.718 | Thread-9 | Login-Request | Denis | Client-Denis | 0 | "null" 
+1 | 2018-12-17 17:15:47.539 | Thread-9 | Chat-Message-Request | Denis | Client-Denis | 1 | "Ich bin Denis" 
+2 | 2018-12-17 17:16:00.970 | Thread-10 | Login-Request | Ich bin Anna | Client-Ich bin Anna | 0 | "null" 
+3 | 2018-12-17 17:16:13.257 | Thread-10 | Chat-Message-Request | Ich bin Anna | Client-Ich bin Anna | 1 | "Ja, Stimmt, bin ich Anna" 
+4 | 2018-12-17 17:16:26.199 | Thread-9 | Chat-Message-Request | Denis | Client-Denis | 2 | "Wie geht es Anna?" 
+5 | 2018-12-17 17:16:30.869 | Thread-10 | Logout-Request | Ich bin Anna | Client-Ich bin Anna | 0 | "null" 
+6 | 2018-12-17 17:16:41.761 | Thread-9 | Chat-Message-Request | Denis | Client-Denis | 3 | "Wieso antwortest du nicht?" 
+7 | 2018-12-17 17:16:43.341 | Thread-9 | Logout-Request | Denis | Client-Denis | 0 | "null" 
+8 | 2018-12-17 17:16:47.282 | null | Shutdown-Message | null | null | 0 | "null" 
+1 | 2018-12-17 17:25:31.321 | Thread-6 | Adrian | Client-Adrian | Login-Request | SEQ 0 | "null" 
+2 | 2018-12-17 17:25:38.205 | Thread-6 | Adrian | Client-Adrian | Chat-Message-Request | SEQ 1 | "Hallo" 
+3 | 2018-12-17 17:25:48.465 | Thread-7 | Kumme | Client-Kumme | Login-Request | SEQ 0 | "null" 
+4 | 2018-12-17 17:25:58.076 | Thread-8 | Elli | Client-Elli | Login-Request | SEQ 0 | "null" 
+5 | 2018-12-17 17:26:02.503 | Thread-8 | Elli | Client-Elli | Chat-Message-Request | SEQ 1 | "Jahu" 
+6 | 2018-12-17 17:26:10.873 | Thread-7 | Kumme | Client-Kumme | Chat-Message-Request | SEQ 1 | "Hiere ist Kumme" 
+7 | 2018-12-17 17:26:24.503 | Thread-8 | Elli | Client-Elli | Chat-Message-Request | SEQ 2 | "Freut zu wissen, Kumme" 
+8 | 2018-12-17 17:27:13.958 | Thread-8 | Elli | Client-Elli | Logout-Request | SEQ 0 | "null" 
+9 | 2018-12-17 17:27:16.600 | Thread-7 | Kumme | Client-Kumme | Logout-Request | SEQ 0 | "null" 
+10 | 2018-12-17 17:27:21.024 | null | null | null | Shutdown-Message | SEQ 0 | "null" 
+1 | 2018-12-17 17:43:52.901 | Thread-6 | anna | Client-anna | Login-Request | SEQ 0 | "" 
+2 | 2018-12-17 17:44:00.212 | Thread-6 | anna | Client-anna | Chat-Message-Request | SEQ 1 | "He. bin anya" 
+3 | 2018-12-17 17:44:07.656 | Thread-6 | anna | Client-anna | Chat-Message-Request | SEQ 2 | "hallo alle" 
+4 | 2018-12-17 17:44:18.152 | Thread-7 | eche | Client-eche | Login-Request | SEQ 0 | "" 
+5 | 2018-12-17 17:44:21.184 | Thread-7 | eche | Client-eche | Chat-Message-Request | SEQ 1 | "Jaaj" 
+6 | 2018-12-17 17:44:24.472 | Thread-7 | eche | Client-eche | Chat-Message-Request | SEQ 2 | "alle schon wissen" 
+7 | 2018-12-17 17:44:26.002 | Thread-7 | eche | Client-eche | Logout-Request | SEQ 0 | "" 
+8 | 2018-12-17 17:44:27.716 | Thread-6 | anna | Client-anna | Logout-Request | SEQ 0 | "" 
+9 | 2018-12-17 17:44:30.535 |  |  |  | Shutdown-Message | SEQ  | "" 
+1 | 2018-12-17 17:53:58.543 | Thread-6 | sldkjflsf | Client-sldkjflsf | Login-Request | 0 |  
+2 | 2018-12-17 17:54:01.036 | Thread-6 | sldkjflsf | Client-sldkjflsf | Chat-Message-Request | 1 | adghadgh 
+3 | 2018-12-17 17:54:03.632 | Thread-6 | sldkjflsf | Client-sldkjflsf | Chat-Message-Request | 2 | asdrtgertg 
+4 | 2018-12-17 17:54:04.866 | Thread-6 | sldkjflsf | Client-sldkjflsf | Logout-Request | 0 |  
+5 | 2018-12-17 17:54:18.555 |  |  |  | Shutdown-Message |  |  

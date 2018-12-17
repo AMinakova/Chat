@@ -10,11 +10,13 @@ public class AuditLogWorkerThreadImpl extends Thread {
   private Connection connection;
   private boolean finished = false;
   private AuditLogServerImpl auditLogServer;
-  private AuditLogStatistics stat = new AuditLogStatistics();
+  private AuditLogStatistics auditLogStatistics;
 
-  public AuditLogWorkerThreadImpl(Connection connection, AuditLogServerImpl auditLogServer) {
+  public AuditLogWorkerThreadImpl(Connection connection,
+      AuditLogServerImpl auditLogServer, AuditLogStatistics auditLogStatistics) {
     this.connection = connection;
     this.auditLogServer = auditLogServer;
+    this.auditLogStatistics = auditLogStatistics;
   }
 
   @Override
@@ -73,17 +75,16 @@ public class AuditLogWorkerThreadImpl extends Thread {
 
     // Empfangene Nachricht bearbeiten
     try {
-      stat.writeAuditLogStatistics();
-
+      auditLogStatistics.writeAuditLogStatistics(auditLogPDU);
     } catch (Exception e) {
-      System.out.println("Exception bei der Nachrichtenverarbeitung"); 
+      System.out.println("Exception bei der Nachrichtenverarbeitung");
     }
 
-    if(auditLogPDU.getPduType() == PduType.SHUTDOWN_MESSAGE) {
+    if (auditLogPDU.getPduType() == PduType.SHUTDOWN_MESSAGE) {
       finished = true;
       this.auditLogServer.shutdown();
+    }
   }
-}
 
   private void closeConnection() {
     try {
