@@ -2,6 +2,8 @@ package edu.hm.dako.chat.server;
 
 import edu.hm.dako.chat.auditlog.AuditLogServerImpl;
 import edu.hm.dako.chat.tcp.TcpConnectionFactory;
+import edu.hm.dako.chat.udp.UdpConnectionFactory;
+import edu.hm.dako.chat.udp.UdpServerSocket;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.logging.Log;
@@ -63,13 +65,12 @@ public final class ServerFactory {
           throw new Exception(e);
         }
 
-
 			case TCPExtendedImplementation:
 
         try {
           TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
               receiveBufferSize);
-          //Connection(Socket) zwischen Server und Auditlogserver
+          //TCPConnection(Socket) zwischen Server und Auditlogserver
           Connection connection = new TcpConnectionFactory()
               .connectToServer(null, 60000, 0, sendBufferSize, receiveBufferSize);
           return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
@@ -77,6 +78,20 @@ public final class ServerFactory {
         } catch (Exception e) {
           throw new Exception(e);
         }
+
+			case UDPExtendedImplementation:
+
+				try {
+					TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
+							receiveBufferSize);
+					//UDPConnection(Socket) zwischen Server und Auditlogserver
+					Connection connection = new UdpConnectionFactory()
+							.connectToServer(null, 60001, 0, sendBufferSize, receiveBufferSize);
+					return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
+							getDecoratedServerSocket(tcpServerSocket), serverGuiInterface, connection);
+				} catch (Exception e) {
+					throw new Exception(e);
+				}
 
       case TCPAuditLogImplementation:
 
@@ -88,6 +103,17 @@ public final class ServerFactory {
         } catch (Exception e) {
           throw new Exception(e);
         }
+
+			case UDPAuditLogImplementation:
+
+				try {
+					UdpServerSocket udpServerSocket = new UdpServerSocket(serverPort, sendBufferSize,
+							receiveBufferSize);
+					return new AuditLogServerImpl(udpServerSocket, Executors.newCachedThreadPool(),
+							(ChatServerGUI) serverGuiInterface);
+				} catch (Exception e) {
+					throw new Exception(e);
+				}
 
 		default:
 			System.out.println("Dezeit nur TCP implementiert!");

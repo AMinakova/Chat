@@ -102,7 +102,9 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 	ObservableList<String> implTypeOptions = FXCollections.observableArrayList(
 			SystemConstants.IMPL_TCP_SIMPLE,
 			SystemConstants.IMPL_TCP_EXTENDED,
-			SystemConstants.IMPL_TCP_AUDITLOG);
+			SystemConstants.IMPL_UDP_EXTENDED,
+			SystemConstants.IMPL_TCP_AUDITLOG,
+			SystemConstants.IMPL_UDP_AUDITLOG);
 
 	/**
 	 * Konstruktion der ServerGUI
@@ -455,8 +457,16 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 				serverImpl = ImplementationType.TCPExtendedImplementation;
 				break;
 
+			case SystemConstants.IMPL_UDP_EXTENDED:
+				serverImpl = ImplementationType.UDPExtendedImplementation;
+				break;
+
 			case SystemConstants.IMPL_TCP_AUDITLOG:
 				serverImpl = ImplementationType.TCPAuditLogImplementation;
+				break;
+
+			case SystemConstants.IMPL_UDP_AUDITLOG:
+				serverImpl = ImplementationType.UDPAuditLogImplementation;
 				break;
 
 		}

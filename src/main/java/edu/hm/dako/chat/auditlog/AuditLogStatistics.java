@@ -48,7 +48,8 @@ public class AuditLogStatistics {
       out.append(sb);
       formatter.close();
 
-      System.out.println("Auswertungssatz in Datei " + fileName + " geschrieben");
+      System.out.println("Auswertungssatz von Client " + auditLogPDU.getUserName() +
+          " SEQ: " + auditLogPDU.getSequenceNumber() + " protokoliert");
       out.flush();
       out.close();
 

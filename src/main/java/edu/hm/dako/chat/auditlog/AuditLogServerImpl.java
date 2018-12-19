@@ -30,8 +30,10 @@ public class AuditLogServerImpl implements ChatServerInterface {
     Task<Void> task = new Task<Void>() {
       @Override
       protected Void call() throws Exception {
+        boolean isStarting = true;
 
-        while (!Thread.currentThread().isInterrupted() && !socket.isClosed()) {
+        while (!Thread.currentThread().isInterrupted() && !socket.isClosed() && isStarting) {
+          isStarting = false;
           try {
             // Auf ankommende Verbindungsaufbauwuensche warten
             System.out.println(

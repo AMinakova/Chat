@@ -40,3 +40,22 @@
 3 | 2018-12-17 17:54:03.632 | Thread-6 | sldkjflsf | Client-sldkjflsf | Chat-Message-Request | 2 | asdrtgertg 
 4 | 2018-12-17 17:54:04.866 | Thread-6 | sldkjflsf | Client-sldkjflsf | Logout-Request | 0 |  
 5 | 2018-12-17 17:54:18.555 |  |  |  | Shutdown-Message |  |  
+1 | 2018-12-18 22:41:39.356 | Thread-6 | bjnjh | Client-bjnjh | Login-Request | 0 |  
+2 | 2018-12-18 22:41:56.037 | Thread-6 | bjnjh | Client-bjnjh | Chat-Message-Request | 1 | ghfgjhfghj fgbfgb 
+3 | 2018-12-18 22:42:32.426 | Thread-6 | bjnjh | Client-bjnjh | Chat-Message-Request | 2 | igogo poehali dalshe 
+4 | 2018-12-18 22:49:04.935 | Thread-6 | bjnjh | Client-bjnjh | Logout-Request | 0 |  
+5 | 2018-12-18 22:49:10.437 |  |  |  | Shutdown-Message |  |  
+1 | 2018-12-18 22:50:30.465 | Thread-6 | dhh | Client-dhh | Login-Request | 0 |  
+2 | 2018-12-18 22:50:33.368 | Thread-6 | dhh | Client-dhh | Chat-Message-Request | 1 | afaf 
+3 | 2018-12-18 22:53:07.985 | Thread-6 | dhh | Client-dhh | Logout-Request | 0 |  
+4 | 2018-12-18 22:53:17.020 |  |  |  | Shutdown-Message |  |  
+1 | 2018-12-19 10:40:03.550 |  |  |  | Shutdown-Message |  |  
+1 | 2018-12-19 10:42:26.517 | Thread-6 | kff;sgg | Client-kff;sgg | Login-Request | 0 |  
+2 | 2018-12-19 10:42:39.083 | Thread-7 | rget | Client-rget | Login-Request | 0 |  
+3 | 2018-12-19 10:42:42.528 | Thread-7 | rget | Client-rget | Chat-Message-Request | 1 | alskdlwkq'q 
+4 | 2018-12-19 10:42:48.198 | Thread-7 | rget | Client-rget | Chat-Message-Request | 2 | /,elqwe 
+5 | 2018-12-19 10:42:57.714 | Thread-6 | kff;sgg | Client-kff;sgg | Chat-Message-Request | 1 | je;3qwe 
+6 | 2018-12-19 10:42:59.340 | Thread-6 | kff;sgg | Client-kff;sgg | Chat-Message-Request | 2 | ;ekfw 
+7 | 2018-12-19 10:43:02.710 | Thread-6 | kff;sgg | Client-kff;sgg | Logout-Request | 0 |  
+8 | 2018-12-19 10:43:06.359 | Thread-7 | rget | Client-rget | Logout-Request | 0 |  
+9 | 2018-12-19 10:43:12.726 |  |  |  | Shutdown-Message |  |  
