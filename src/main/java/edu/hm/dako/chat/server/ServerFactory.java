@@ -65,12 +65,13 @@ public final class ServerFactory {
           throw new Exception(e);
         }
 
+        // Server als SimpleChatServer und als TCP-Client für AuditlogServer startet
 			case TCPExtendedImplementation:
 
         try {
           TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
               receiveBufferSize);
-          //TCPConnection(Socket) zwischen Server und Auditlogserver
+          //TCPConnection zwischen Server und Auditlogserver erzeugt
           Connection connection = new TcpConnectionFactory()
               .connectToServer(null, 60000, 0, sendBufferSize, receiveBufferSize);
           return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
@@ -79,12 +80,13 @@ public final class ServerFactory {
           throw new Exception(e);
         }
 
+        // Server als SimpleChatServer und als UDP-Client für AuditlogServer startet
 			case UDPExtendedImplementation:
 
 				try {
 					TcpServerSocket tcpServerSocket = new TcpServerSocket(serverPort, sendBufferSize,
 							receiveBufferSize);
-					//UDPConnection(Socket) zwischen Server und Auditlogserver
+					//UDPConnection zwischen Server und Auditlogserver erzeugt
 					Connection connection = new UdpConnectionFactory()
 							.connectToServer(null, 60001, 0, sendBufferSize, receiveBufferSize);
 					return new SimpleChatServerImpl(Executors.newCachedThreadPool(),
@@ -93,6 +95,7 @@ public final class ServerFactory {
 					throw new Exception(e);
 				}
 
+				// AuditLogServer mit TCP-Verbindung startet
       case TCPAuditLogImplementation:
 
         try {
@@ -104,6 +107,7 @@ public final class ServerFactory {
           throw new Exception(e);
         }
 
+        // AuditLogServer mit UDP-Verbindung startet
 			case UDPAuditLogImplementation:
 
 				try {

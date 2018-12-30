@@ -1,9 +1,17 @@
 package edu.hm.dako.chat.auditlog;
 
+import edu.hm.dako.chat.common.AuditLogPDU;
 import edu.hm.dako.chat.common.PduType;
 import edu.hm.dako.chat.connection.Connection;
 import edu.hm.dako.chat.connection.ConnectionTimeoutException;
 import edu.hm.dako.chat.connection.EndOfFileException;
+
+/**
+ * Worker-Thread zur serverseitigen Bedienung einer Session mit Chat Server als Client. Bei dieser
+ * Implementierung wird nur einen Worker-Thread erzeugt.
+ *
+ * @author Minakova (auf Basis von der Arbeit von Peter Mandl)
+ */
 
 public class AuditLogWorkerThreadImpl extends Thread {
 
@@ -67,19 +75,19 @@ public class AuditLogWorkerThreadImpl extends Thread {
       return;
 
     } catch (Exception e) {
-      System.out.println(
-          "Empfang einer Nachricht fehlgeschlagen.");
+      System.out.println("Empfang einer Nachricht fehlgeschlagen.");
       finished = true;
       return;
     }
 
-    // Empfangene Nachricht bearbeiten
+    // Empfangene Nachricht protokolieren
     try {
       auditLogStatistics.writeAuditLogStatistics(auditLogPDU);
     } catch (Exception e) {
       System.out.println("Exception bei der Nachrichtenverarbeitung");
     }
 
+    // Shutdown Nachricht bearbeiten
     if (auditLogPDU.getPduType() == PduType.SHUTDOWN_MESSAGE) {
       finished = true;
       this.auditLogServer.shutdown();

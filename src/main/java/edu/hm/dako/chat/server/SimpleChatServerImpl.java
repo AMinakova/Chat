@@ -1,6 +1,6 @@
 package edu.hm.dako.chat.server;
 
-import edu.hm.dako.chat.auditlog.AuditLogPDU;
+import edu.hm.dako.chat.common.AuditLogPDU;
 import edu.hm.dako.chat.common.PduType;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
@@ -117,6 +117,8 @@ public class SimpleChatServerImpl extends AbstractChatServer {
 		clients.deleteAll();
 		Thread.currentThread().interrupt();
 		socket.close();
+
+		//Shutdown-Message an AuditlogServer übergeben um ihm auch zu schliessen
 		if(auditLogServerConnection != null) {
 			AuditLogPDU auditLogPDU = new AuditLogPDU(PduType.SHUTDOWN_MESSAGE);
 			auditLogServerConnection.send(auditLogPDU);

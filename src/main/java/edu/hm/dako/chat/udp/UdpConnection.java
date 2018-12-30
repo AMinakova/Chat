@@ -20,9 +20,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Implementierung der UDP-Verbindung
+ * Implementierung der Nachrichtenaustausch mit UDP
  *
- * @author Ganna Minakova
+ * @author Minakova
  */
 public class UdpConnection implements Connection {
 
@@ -35,28 +35,29 @@ public class UdpConnection implements Connection {
   private byte[] receiveBuffer = new byte[2048];
 
   public UdpConnection(DatagramSocket socket, int sendBufferSize, int receiveBufferSize,
-        int serverPort, String serverHost)
+      int serverPort, String serverHost)
       throws UnknownHostException {
     this.socket = socket;
     this.serverPort = serverPort;
 
-    this.serverAddress = serverHost == null ? InetAddress.getLocalHost() : InetAddress.getByName(serverHost);
+    this.serverAddress =
+        serverHost == null ? InetAddress.getLocalHost() : InetAddress.getByName(serverHost);
 
     log.debug(Thread.currentThread().getName()
-        + ": Verbindung mit neuem Client aufgebaut, Remote-UDP-Port " + socket.getPort());
+        + ": Nachrichtenaustausch mit UDP vorbereitet, Remote-UDP-Port " + socket.getPort());
 
     try {
-      log.debug("Standardgroesse des Empfangspuffers der Verbindung: "
+      log.debug("Standardgroesse des Empfangspuffers des Nachrichtenaustausch: "
           + socket.getReceiveBufferSize() + " Byte");
-      log.debug("Standardgroesse des Sendepuffers der Verbindung: "
+      log.debug("Standardgroesse des Sendepuffers des Nachrichtenaustausch: "
           + socket.getSendBufferSize() + " Byte");
 
       socket.setReceiveBufferSize(receiveBufferSize);
       socket.setSendBufferSize(sendBufferSize);
 
-      log.debug("Eingestellte Groesse des Empfangspuffers der Verbindung: "
+      log.debug("Eingestellte Groesse des Empfangspuffers des Nachrichtenaustausch: "
           + socket.getReceiveBufferSize() + " Byte");
-      log.debug("Eingestellte Groesse des Sendepuffers der Verbindung: "
+      log.debug("Eingestellte Groesse des Sendepuffers des Nachrichtenaustausch: "
           + socket.getSendBufferSize() + " Byte");
 
     } catch (SocketException e) {
@@ -64,14 +65,16 @@ public class UdpConnection implements Connection {
     }
   }
 
+  /**
+   * Überschriebene Receive-Methode für UDP mit DatagramPacket
+   * @param timeout
+   *          Maximale Wartezeit in ms
+   * @return Serealizable Nachricht
+   * @throws Exception
+   */
   @Override
   public Serializable receive(int timeout)
       throws Exception {
-
-//    if (!socket.isConnected()) {
-//      log.debug("Empfangsversuch, obwohl Verbindung nicht mehr steht");
-//      throw new EndOfFileException(new Exception());
-//    }
 
     socket.setSoTimeout(timeout);
     try {
@@ -100,6 +103,12 @@ public class UdpConnection implements Connection {
     return receive(0);
   }
 
+  /**
+   * Methode um Nachricht durch DatagrammSocket zu schicken
+   * @param message
+   *          Die zu sendende Nachricht.
+   * @throws Exception
+   */
   @Override
   public void send(Serializable message) throws Exception {
 
@@ -107,10 +116,6 @@ public class UdpConnection implements Connection {
       log.debug("Sendeversuch, obwohl Socket geschlossen ist");
       throw new IOException();
     }
-//    if (!socket.isConnected()) {
-//      log.debug("Sendeversuch, obwohl Verbindung nicht mehr steht");
-//      throw new IOException();
-//    }
 
     try {
       ByteArrayOutputStream bStream = new ByteArrayOutputStream();
@@ -130,16 +135,20 @@ public class UdpConnection implements Connection {
     }
   }
 
+  /**
+   * Datagrammsocket schliesst sich
+   * @throws IOException
+   */
   @Override
   public synchronized void close() throws IOException {
     try {
-      log.debug("Verbindungssocket wird geschlossen, lokaler Port: "
+      log.debug("Socket wird geschlossen, lokaler Port: "
           + socket.getLocalPort() + ", entfernter Port: " + socket.getPort());
       socket.close();
     } catch (Exception e) {
-      log.debug("Exception beim Verbindungsabbau " + socket.getInetAddress());
+      log.debug("Exception beim Socketabbau " + socket.getInetAddress());
       log.debug(e.getMessage());
-      throw new IOException(new IOException());
+      throw new IOException();
     }
   }
 }

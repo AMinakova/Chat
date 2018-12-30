@@ -5,7 +5,7 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import edu.hm.dako.chat.auditlog.AuditLogPDU;
+import edu.hm.dako.chat.common.AuditLogPDU;
 import edu.hm.dako.chat.common.ChatPDU;
 import edu.hm.dako.chat.common.ClientConversationStatus;
 import edu.hm.dako.chat.common.ClientListEntry;
@@ -24,6 +24,8 @@ import edu.hm.dako.chat.connection.EndOfFileException;
 public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
 
 	private static Log log = LogFactory.getLog(SimpleChatWorkerThreadImpl.class);
+
+	// Connection zwischen Server und AuditlogServer
 	private Connection auditLogServerConnection;
 
 	public SimpleChatWorkerThreadImpl(Connection con, SharedChatClientList clients,
@@ -436,7 +438,8 @@ public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
         this.auditLogServerConnection.send(auditLogPDU);
       }
       catch (Exception ex) {
-		    System.out.println("Error when sending audit log pdu: " + ex.toString());
+		    System.out.println("Error when sending audit log pdu: "
+            + ex.getMessage() + " at " + ex.getStackTrace());
       }
 		}
 

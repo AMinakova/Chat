@@ -651,6 +651,7 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 		updateNumberOfRequests();
 	}
 
+	//Methode um Knopf "Server stop" in GUI zu drücken
 	public void stopServer() {
 		stopButton.fire();
 	}

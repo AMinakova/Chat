@@ -141,7 +141,7 @@ public class TcpConnection implements Connection {
 	}
 
 	@Override
-	public void send(Serializable message) throws Exception {
+	public synchronized void send(Serializable message) throws Exception {
 
 		if (socket.isClosed()) {
 			log.debug("Sendeversuch, obwohl Socket geschlossen ist");

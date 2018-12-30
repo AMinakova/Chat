@@ -1,20 +1,30 @@
 package edu.hm.dako.chat.auditlog;
 
-import edu.hm.dako.chat.common.PduType;
+import edu.hm.dako.chat.common.AuditLogPDU;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Formatter;
 
+/**
+ * Implementierung der Protokolierung des AuditlogServers
+ *
+ * @author Minakova
+ */
+
 public class AuditLogStatistics {
 
   private AuditLogPDU auditLogPDU;
   private File file;
   private String fileName;
+
+  //Zaelt die Events, welche AuditLogServer empfängt
   private int counter;
 
-
+  /**
+   * Kostruktor, welcher File beim ersten Start von AuditLogServer erzeugt
+   */
   public AuditLogStatistics(String filename) {
     this.fileName = filename;
     this.file = new File(filename);
@@ -31,7 +41,10 @@ public class AuditLogStatistics {
     }
   }
 
-  void writeAuditLogStatistics(AuditLogPDU auditLogPDU) {
+  /**
+   * Öffnet File und schriebt neue Einträge in speziell angegebenem Form unten auf
+   */
+  public void writeAuditLogStatistics(AuditLogPDU auditLogPDU) {
     try {
       FileWriter fstream = new FileWriter(fileName, true);
       BufferedWriter out = new BufferedWriter(fstream);
@@ -47,9 +60,6 @@ public class AuditLogStatistics {
 
       out.append(sb);
       formatter.close();
-
-      System.out.println("Auswertungssatz von Client " + auditLogPDU.getUserName() +
-          " SEQ: " + auditLogPDU.getSequenceNumber() + " protokoliert");
       out.flush();
       out.close();
 

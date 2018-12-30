@@ -7,6 +7,12 @@ import edu.hm.dako.chat.server.ChatServerInterface;
 import java.util.concurrent.ExecutorService;
 import javafx.concurrent.Task;
 
+/**
+ * AuditLogServer-Implementierung
+ *
+ * @author Minakova (auf Basis von der Arbeit von Peter Mandl)
+ */
+
 public class AuditLogServerImpl implements ChatServerInterface {
 
   private ServerSocketInterface socket;
@@ -14,7 +20,13 @@ public class AuditLogServerImpl implements ChatServerInterface {
   private ChatServerGUI serverGuiInterface;
   private AuditLogStatistics auditLogStatistics;
 
-
+  /**
+   * Konstruktor für AuditLogServer, welche neues File für Protokolierung erzeugt
+   *
+   * @param socket socket
+   * @param executorService executorService
+   * @param serverGuiInterface Gui von AuditLogServer
+   */
   public AuditLogServerImpl(ServerSocketInterface socket,
       ExecutorService executorService,
       ChatServerGUI serverGuiInterface) {
@@ -32,6 +44,7 @@ public class AuditLogServerImpl implements ChatServerInterface {
       protected Void call() throws Exception {
         boolean isStarting = true;
 
+        //Wegen UDP-Schwerigkeiten, erzeugen wir nut einen Thread
         while (!Thread.currentThread().isInterrupted() && !socket.isClosed() && isStarting) {
           isStarting = false;
           try {
@@ -63,6 +76,9 @@ public class AuditLogServerImpl implements ChatServerInterface {
     th.start();
   }
 
+  /**
+   * Macht Änderungen in GUI vom AuditlogServer wegen dem Schutdown Nachricht
+   */
   public void shutdown() {
     serverGuiInterface.stopServer();
   }
