@@ -20,22 +20,23 @@ public class StatisticReader {
     int logins = 0;
     int logouts = 0;
     int messages = 0;
-    int testCounter = 0;
+    int testNumber = 0;
+    String name;
+    String PDUtype;
     String[] columnsInLine;
     List<String> clientsList = new ArrayList<>();
-    boolean lastPrinted = false;
 
     //Liest Datei
     try (BufferedReader reader = Files.newBufferedReader(path)) {
       String line;
+
       //Liest jede Zeile von Datei und entsprechend bearbeitet
       while ((line = reader.readLine()) != null) {
-        lastPrinted = false;
 
         //Formatiert Datei in Columns
         columnsInLine = line.split(" \\| ");
-
-        switch (columnsInLine[5]) {
+        PDUtype = columnsInLine[5];
+        switch (PDUtype) {
           case "Login-Request":
             logins++;
             break;
@@ -48,29 +49,21 @@ public class StatisticReader {
         }
 
         //Zählt Clienten
-        if (!clientsList.contains(columnsInLine[3]) && columnsInLine[3] != null
-            && !columnsInLine[3].equals("")) {
-          clientsList.add(columnsInLine[3]);
+        name = columnsInLine[3];
+        if (!clientsList.contains(name) && name != null
+            && !name.equals("")) {
+          clientsList.add(name);
         }
 
-        //Macht Zusammenfassung für jeden Test
-        if (logouts == logins && logouts != 0) {
-          testCounter++;
-          System.out.println("Test #" + testCounter + " | Clients: " + clientsList.size() + " | Logins: "
+        //Macht Zusammenfassung für Test
+        if (PDUtype.equals("Shutdown-Message")) {
+          System.out.println("Test #" + ++testNumber + " | Clients: " + clientsList.size() + " | Logins: "
               + logins + " | Messages: " + messages + " | Logouts: " + logouts);
-          lastPrinted = true;
           logins = 0;
           logouts = 0;
           messages = 0;
           clientsList.clear();
         }
-      }
-
-      //Macht Zusammenfassung für jeden Test auch mit teilweiseverlorener Folge
-      if (!lastPrinted && (logouts != 0 || logins != 0)) {
-        testCounter++;
-        System.out.println("Test #" + testCounter + " | Clients: " + clientsList.size() + " | Logins: "
-            + logins + " | Messages: " + messages + " | Logouts: " + logouts);
       }
     } catch (IOException e) {
       System.out.println("Smth wrong" + e);

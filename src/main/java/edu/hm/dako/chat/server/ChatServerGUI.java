@@ -157,6 +157,23 @@ public class ChatServerGUI extends Application implements ChatServerGuiInterface
 		reactOnStopButton();
 		reactOnFinishButton();
 		stopButton.setDisable(true);
+
+		//Automatische Einstellung von Defaultport in verschiedene Servervariationen
+		comboBoxImplType.getSelectionModel().selectedItemProperty().addListener(
+			(options, oldValue, newValue) -> {
+				String serverPortNum = "50000";
+				switch (newValue) {
+					case SystemConstants.IMPL_TCP_AUDITLOG:
+						serverPortNum = "60000";
+						break;
+					case SystemConstants.IMPL_UDP_AUDITLOG:
+						serverPortNum = "60001";
+						break;
+				}
+
+				serverPort.setText(serverPortNum);
+			}
+		);
 	}
 
 	/**

@@ -438,8 +438,7 @@ public class SimpleChatWorkerThreadImpl extends AbstractWorkerThread {
         this.auditLogServerConnection.send(auditLogPDU);
       }
       catch (Exception ex) {
-		    System.out.println("Error when sending audit log pdu: "
-            + ex.getMessage() + " at " + ex.getStackTrace());
+		    System.out.println("Error when sending audit log pdu: " + ex.getMessage());
       }
 		}
 
